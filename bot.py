@@ -2,8 +2,11 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from datetime import datetime, time, timedelta
+import logging
+import logging.handlers
 import asyncio
 import os
+import sys
 
 # Укажите ваши данные
 api_id = int(os.environ ["api_id"])
@@ -12,16 +15,30 @@ api_hash = os.environ ["api_hash"]
 # ID чата и ID пользователя
 chat_id = int(os.environ ["chat_id"]) #Поменять после тестов
 user_id = int(os.environ ["user_id"]) #Поменять после тестов
-app = Client("my_account", api_id=api_id, api_hash=api_hash)
 
-# Время, в которое бот должен работать (8:55 до 9:15)
-start_time = time(18, 30) #Поменять после тестов / UTC TIME
-end_time = time(20, 30)   #Поменять после тестов / UTC TIME
-message_start_time = time(6, 50) #Поменять после тестов / Наше время
-message_end_time = time(7, 30)   #Поменять после тестов / Наше время
+# Время, в которое бот должен работать (8:55 до 9:20)
+start_time = time(23, 20) #Поменять после тестов / Установить UTC TIME для Github Actions
+end_time = time(23, 59)   #Поменять после тестов / Установить UTC TIME для Github Actions
+message_start_time = time(6, 50) #Поменять после тестов / Установить UTC TIME для Github Actions
+message_end_time = time(7, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
 
 # Дни недели (с понедельника по пятницу)
 allowed_weekdays = {0, 1, 2, 3, 4}
+
+#Добавляем логи
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger_file_handler = logging.handlers.RotatingFileHandler(
+    "status.log",
+    maxBytes=1024 * 1024,
+    backupCount=1,
+    encoding="utf8",
+)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger_file_handler.setFormatter(formatter)
+logger.addHandler(logger_file_handler)
+
+app = Client("my_account", api_id=api_id, api_hash=api_hash)
 
 # Проверка, находится ли текущее время в нужном диапазоне
 def is_in_time_range():
@@ -44,7 +61,7 @@ async def check_likes_and_respond():
                         reactions = message.reactions
                         if reactions:
                             for reaction in reactions.reactions:
-                                # Проверяем, что количество реакций больше 12
+                                # Проверяем, что количество реакций больше 15
                                 if reaction.count >= 15: #Поменять после тестов
                                     '''if reaction.emoji == "👍":
                                         print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Я уже поставил реакцию на сообщение.")
@@ -52,25 +69,31 @@ async def check_likes_and_respond():
                                     else:'''
                                 await app.send_reaction(chat_id, message.id, "👍")  # Ставим реакцию
                                 print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Сообщение с реакцией найдено, поставлен лайк.")
+                                logger.info(f'(UTC Time) | Сообщение с реакцией найдено, поставлен лайк.')
                                 return "DONE"  # Останавливаем проверку до следующего дня
             return None
                               
 async def main():
     await app.start()  # Запускаем клиента
-    print (is_in_time_range())
+    if is_in_time_range() == 0:
+        logger.info(f'(UTC Time) | Еще не наступило время для работы.')
+    else:
+        logger.info(f'(UTC Time) | Время наступило.')
     sended_reaction = 0
     while (is_in_time_range() and sended_reaction == 0):
         result = await check_likes_and_respond()  # Запускаем проверку
         if result == "DONE":
             print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Остановка до следующего дня.")
+            logger.info(f'(UTC Time) | Остановка до следующего дня.')
             sended_reaction = 1
         else:
             print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Сообщения нет.")
+            logger.info(f'(UTC Time) | Сообщения нет.')
             await asyncio.sleep(60) #Поменять после тестов
     
     now = datetime.now()
     next_run_time_1 = datetime.combine(now.date(), start_time)
-    # Создаем время на следующий день в 8:55
+
     if now.weekday() == 4:
         next_day = now + timedelta(days=3)
     else:
@@ -81,10 +104,13 @@ async def main():
     if now > next_run_time_1:
         wait_time = (next_run_time_2 - now).total_seconds()
         print(f"Ожидание до {next_run_time_2.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).")
+        logger.info(f'(UTC Time) | Ожидание до {next_run_time_2.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).')
     else:
         wait_time = (next_run_time_1 - now).total_seconds()
         print(f"Ожидание до {next_run_time_1.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).")
-    await asyncio.sleep(wait_time)  #Ждем следующего дня для проверки
+        logger.info(f'(UTC Time) | Ожидание до {next_run_time_1.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).')
+    sys.exit(0)
+    #await asyncio.sleep(wait_time)  #Ждем следующего дня для проверки
 
 
 if __name__ == "__main__":
