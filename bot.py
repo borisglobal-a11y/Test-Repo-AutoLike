@@ -104,11 +104,11 @@ async def main():
     if now > next_run_time_1:
         wait_time = (next_run_time_2 - now).total_seconds()
         print(f"Ожидание до {next_run_time_2.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).")
-        logger.info(f'(UTC Time) | Ожидание до {next_run_time_2.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).')
+        logger.info(f'(UTC Time) | Ожидание до {next_run_time_2.strftime("%Y-%m-%d %H:%M")} ({wait_time} секунд).')
     else:
         wait_time = (next_run_time_1 - now).total_seconds()
         print(f"Ожидание до {next_run_time_1.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).")
-        logger.info(f'(UTC Time) | Ожидание до {next_run_time_1.strftime('%Y-%m-%d %H:%M')} ({wait_time} секунд).')
+        logger.info(f'(UTC Time) | Ожидание до {next_run_time_1.strftime("%Y-%m-%d %H:%M")} ({wait_time} секунд).')
     sys.exit(0)
     #await asyncio.sleep(wait_time)  #Ждем следующего дня для проверки
 
