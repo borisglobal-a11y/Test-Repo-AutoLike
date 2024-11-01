@@ -3,22 +3,40 @@ from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from datetime import datetime, time, timedelta
 import asyncio
-import os
 
 # Укажите ваши данные
 api_id = '24806199'
 api_hash = '547daaeb767535cdb4623e905b8858b7'
 
 # ID чата и ID пользователя
-chat_id = int('-4551240933') #Поменять после тестов
+chat_id = -4551240933 #Поменять после тестов
 user_id = int('1016103104') #Поменять после тестов
 app = Client("my_account", api_id=api_id, api_hash=api_hash)
 
+
+chat_name = '12345'
+with app:
+    # Поиск чата
+    dialogs = app.get_dialogs()
+    chat_id = None
+    for dialog in dialogs:
+        # Проверяем, что у чата есть атрибут title
+        if dialog.chat.title and chat_name.lower() in dialog.chat.title.lower():
+            print(f"Chat found: {dialog.chat.title}")
+            print(f"Chat ID: {dialog.chat.id}")
+            chat_id = dialog.chat.id
+            break
+    if not chat_id:
+        print("Chat not found.")
+    
+
+
+
 # Время, в которое бот должен работать (8:55 до 9:15)
-start_time = time(15, 45) #Поменять после тестов / UTC TIME
-end_time = time(18, 30)   #Поменять после тестов / UTC TIME
-message_start_time = time(17, 30) #Поменять после тестов / Наше время
-message_end_time = time(20, 30)   #Поменять после тестов / Наше время
+start_time = time(18, 30) #Поменять после тестов
+end_time = time(20, 30)   #Поменять после тестов
+message_start_time = time(17, 30) #Поменять после тестов
+message_end_time = time(22, 00)   #Поменять после тестов   
 
 # Дни недели (с понедельника по пятницу)
 allowed_weekdays = {0, 1, 2, 3, 4}
