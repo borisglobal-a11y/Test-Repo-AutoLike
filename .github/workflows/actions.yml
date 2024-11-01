@@ -2,7 +2,7 @@ name: run bot.py
 
 on:
   schedule:
-    - cron: '5-15 17 * * 1-5' #At every minute from 10 through 20 past hour 16 on every day-of-week from Monday through Friday.
+    - cron: '12-20 18 * * 1-5' #At every minute from 10 through 20 past hour 16 on every day-of-week from Monday through Friday.
   workflow_dispatch:
 
 jobs:
@@ -24,9 +24,4 @@ jobs:
           pip install -r requirements.txt
           
       - name: execute py script # run main.py
-        env:
-          api_id: ${{ secrets.API_ID }}
-          api_hash: ${{ secrets.API_HASH }}
-          chat_id: ${{ secrets.CHAT_ID }}
-          user_id: ${{ secrets.USER_ID }}
         run: python bot.py

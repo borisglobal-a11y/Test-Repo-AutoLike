@@ -6,12 +6,12 @@ import asyncio
 import os
 
 # Укажите ваши данные
-api_id = int(os.environ ["api_id"])
-api_hash = os.environ ["api_hash"]
+api_id = '24806199'
+api_hash = '547daaeb767535cdb4623e905b8858b7'
 
 # ID чата и ID пользователя
-chat_id = int(os.environ ["chat_id"]) #Поменять после тестов
-user_id = int(os.environ ["user_id"]) #Поменять после тестов
+chat_id = int('-4551240933') #Поменять после тестов
+user_id = int('1016103104') #Поменять после тестов
 app = Client("my_account", api_id=api_id, api_hash=api_hash)
 
 # Время, в которое бот должен работать (8:55 до 9:15)
