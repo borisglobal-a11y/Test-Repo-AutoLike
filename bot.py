@@ -17,8 +17,8 @@ chat_id = int(os.environ ["chat_id"]) #Поменять после тестов
 user_id = int(os.environ ["user_id"]) #Поменять после тестов
 
 # Время, в которое бот должен работать (8:55 до 9:20)
-start_time = time(0, 10) #Поменять после тестов / Установить UTC TIME для Github Actions
-end_time = time(1, 59)   #Поменять после тестов / Установить UTC TIME для Github Actions
+start_time = time(6, 40) #Поменять после тестов / Установить UTC TIME для Github Actions
+end_time = time(7, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
 message_start_time = time(6, 50) #Поменять после тестов / Установить UTC TIME для Github Actions
 message_end_time = time(7, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
 
@@ -43,12 +43,12 @@ app = Client("my_account", api_id=api_id, api_hash=api_hash)
 # Проверка, находится ли текущее время в нужном диапазоне
 def is_in_time_range():
     now = datetime.now().time()
-    today = (datetime.now() + timedelta(days=-1)).weekday() 
+    today = datetime.now().weekday()
     return start_time <= now <= end_time and today in allowed_weekdays
 
 # Проверка, было ли сообщение отправлено в нужный временной диапазон
 def is_message_today_and_in_time_range(message_time):
-    now = datetime.now() + timedelta(days=-1)
+    now = datetime.now()
     return message_time.date() == now.date() and message_start_time <= message_time.time() <= message_end_time
 
 # Обработчик сообщений
