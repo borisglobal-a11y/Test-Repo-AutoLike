@@ -97,7 +97,10 @@ async def main():
     if now.weekday() == 4:
         next_day = now + timedelta(days=3)
     else:
-        next_day = now + timedelta(days=1)
+        if now.weekday() == 5:
+            next_day = now + timedelta(days=2)
+        else:
+            next_day = now + timedelta(days=1)
     next_run_time_2 = datetime.combine(next_day.date(), start_time)
     
     # Вычисляем разницу
