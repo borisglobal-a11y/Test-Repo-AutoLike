@@ -92,7 +92,19 @@ async def main():
             await asyncio.sleep(60) #Поменять после тестов
     
     now = datetime.now()
-    next_run_time_1 = datetime.combine(now.date(), start_time)
+
+    if now.weekday() == 4:
+        next_day = now + timedelta(days=3)
+    else:
+        if now.weekday() == 5:
+            next_day = now + timedelta(days=2)
+        else:
+            if now.weekday() == 6:
+                next_day = now + timedelta(days=1)
+            else:
+                next_day = now + timedelta(days=0)
+
+    next_run_time_1 = datetime.combine(next_day.date(), start_time)
 
     if now.weekday() == 4:
         next_day = now + timedelta(days=3)
@@ -101,6 +113,7 @@ async def main():
             next_day = now + timedelta(days=2)
         else:
             next_day = now + timedelta(days=1)
+            
     next_run_time_2 = datetime.combine(next_day.date(), start_time)
     
     # Вычисляем разницу
