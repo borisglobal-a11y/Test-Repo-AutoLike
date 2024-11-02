@@ -1,4 +1,4 @@
-name: Use GitHub App
+name: Use GitHub App (Get TOKEN)
 on:
   workflow_dispatch:
   

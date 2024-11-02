@@ -1,4 +1,4 @@
-name: run bot.py
+name: Run AutoLike
 
 on:
   schedule:
