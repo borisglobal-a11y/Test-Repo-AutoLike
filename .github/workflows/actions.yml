@@ -8,6 +8,8 @@ on:
     - cron: '10 7 * * 1-5' #!Исправить после теста.
     - cron: '20 7 * * 1-5' #!Исправить после теста.
   workflow_dispatch:
+  repository_dispatch:
+    types: [trigger-workflow-1]
 
 jobs:
   build:
