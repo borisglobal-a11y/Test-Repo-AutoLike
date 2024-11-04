@@ -18,7 +18,7 @@ user_id = int(os.environ ["user_id"]) #Поменять после тестов
 
 # Время, в которое бот должен работать (8:40 до 9:30)
 start_time = time(6, 40) #Поменять после тестов / Установить UTC TIME для Github Actions
-end_time = time(7, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
+end_time = time(8, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
 message_start_time = time(6, 50) #Поменять после тестов / Установить UTC TIME для Github Actions
 message_end_time = time(7, 30)   #Поменять после тестов / Установить UTC TIME для Github Actions
 
