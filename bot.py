@@ -7,6 +7,9 @@ import logging.handlers
 import asyncio
 import os
 import sys
+import random
+import time
+
 
 # Укажите ваши данные
 api_id = int(os.environ ["api_id"])
@@ -80,6 +83,21 @@ async def main():
     else:
         logger.info(f'(UTC Time) | Время наступило.')
     sended_reaction = 0
+
+    #Элемент рандома
+    # Варианты времени в секундах
+    times = [60, 120, 180, 240, 300, 360, 420, 480]
+
+    # Вероятности (должны в сумме давать 1, но можно просто в весах)
+    weights = [0.05, 0.15, 0.20, 0.15, 0.15, 0.10, 0.15, 0.05]
+
+    # Выбираем случайное время с заданными вероятностями
+    wait_seconds = random.choices(times, weights)[0]
+
+    logger.info(f'(UTC Time) | Ожидание {wait_seconds // 60} минут...')
+    await asyncio.sleep(wait_seconds) #Поменять после тестов
+    logger.info(f'(UTC Time) | Продолжаем выполнение!')
+
     while (is_in_time_range() and sended_reaction == 0):
         result = await check_likes_and_respond()  # Запускаем проверку
         if result == "DONE":
