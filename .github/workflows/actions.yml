@@ -19,22 +19,10 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner
 
-      - name: Set up Python with retry
-        run: |
-          i=1
-          until python --version 2>/dev/null | grep "3.11.3" || [ $i -gt 5 ]; do
-            echo "Retrying setup-python... Attempt $i"
-            i=$((i+1))
-            sleep 60
-            rm -rf /opt/hostedtoolcache/Python/3.11.3* || true
-            curl -s https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json | grep "3.11.3" || continue
-            sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
-          done
-
-          if ! python --version 2>/dev/null | grep "3.11.3"; then
-            echo "Failed to install Python 3.11.3 after 5 attempts"
-            exit 1
-          fi
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.3' # install the python version needed
       
       - name: Cache Python packages
         uses: actions/cache@v3
