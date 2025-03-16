@@ -8,7 +8,6 @@ import asyncio
 import os
 import sys
 import random
-import time
 
 
 # Укажите ваши данные
