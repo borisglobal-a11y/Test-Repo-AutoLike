@@ -14,6 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:  
+      TZ: Europe/Kyiv  # Устанавливаем часовой пояс
     steps:
 
       - name: checkout repo content

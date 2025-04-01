@@ -19,10 +19,10 @@ chat_id = int(os.environ ["chat_id"]) #Поменять после тестов
 user_id = int(os.environ ["user_id"]) #Поменять после тестов
 
 # Время, в которое бот должен работать (8:40 до 9:30)
-start_time = time(5, 55) #Поменять после тестов / Установить UTC TIME для Github (5,55 - Летнее, 6,55 - Зимнее)
-end_time = time(6, 30)   #Поменять после тестов / Установить UTC TIME для Github (6,30 - Летнее, 7,30 - Зимнее)
-message_start_time = time(5, 20) #Поменять после тестов / Установить UTC TIME для Github (5,20 - Летнее, 6,20 - Зимнее) 
-message_end_time = time(6, 30)   #Поменять после тестов / Установить UTC TIME для Github (6,30 - Летнее, 7,30 - Зимнее)
+start_time = time(8, 55) #Поменять после тестов / Установить UTC TIME для Github (5,55 - Летнее, 6,55 - Зимнее)
+end_time = time(9, 30)   #Поменять после тестов / Установить UTC TIME для Github (6,30 - Летнее, 7,30 - Зимнее)
+message_start_time = time(8, 20) #Поменять после тестов / Установить UTC TIME для Github (5,20 - Летнее, 6,20 - Зимнее) 
+message_end_time = time(9, 30)   #Поменять после тестов / Установить UTC TIME для Github (6,30 - Летнее, 7,30 - Зимнее)
 
 # Дни недели (с понедельника по пятницу)
 allowed_weekdays = {0, 1, 2, 3, 4}
@@ -78,8 +78,10 @@ async def check_likes_and_respond():
 async def main():
     await app.start()  # Запускаем клиента
     if is_in_time_range() == 0:
+        print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Еще не наступило время для работы.")
         logger.info(f'(UTC Time) | Еще не наступило время для работы.')
     else:
+        print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Время наступило.")
         logger.info(f'(UTC Time) | Время наступило.')
     sended_reaction = 0
 
@@ -88,13 +90,15 @@ async def main():
     times = [60, 120, 180, 240, 300, 360]
 
     # Вероятности (должны в сумме давать 1, но можно просто в весах)
-    weights = [0.05, 0.15, 0.3, 0.25, 0.15, 0.10]
+    weights = [0.10, 0.15, 0.25, 0.25, 0.15, 0.10]
 
     # Выбираем случайное время с заданными вероятностями
     wait_seconds = random.choices(times, weights)[0]
 
+    print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Ожидание {wait_seconds // 60} минут...")
     logger.info(f'(UTC Time) | Ожидание {wait_seconds // 60} минут...')
     await asyncio.sleep(wait_seconds) #Поменять после тестов
+    print(f"{datetime.now().strftime('%Y.%m.%d %H:%M')} - Продолжаем выполнение!")
     logger.info(f'(UTC Time) | Продолжаем выполнение!')
 
     while (is_in_time_range() and sended_reaction == 0):
